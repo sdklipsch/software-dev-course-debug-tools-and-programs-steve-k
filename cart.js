@@ -6,24 +6,34 @@ const cart = [
 
 function calculateTotal(cartItems) {
   let total = 0;
-  for (let i = 0; i <= cartItems.length; i++) { // Bug: <= should be <
+  for (let i = 0; i < cartItems.length; i++) { // Bug: <= should bezzz <
       total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration
   }
   return total;
 }
 
 function applyDiscount(total, discountRate) {
+  if (discountRate < 0 || discountRate > 1) {
+    return "Discount rate must be between 0 and 1"
+  }
   return total - total * discountRate; // Bug: Missing validation for discountRate
 }
 
 function generateReceipt(cartItems, total) {
+  if (typeof total !== "number") {
+    throw new Error("Total must be a valid number")
+  }
+
   let receipt = "Items:\n";
   cartItems.forEach(item => {
       receipt += `${item.name}: $${item.price}\n`;
   });
+      
   receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
+      
   return receipt;
 }
+  
 
 // Debugging entry point
 console.log("Starting shopping cart calculation...");
